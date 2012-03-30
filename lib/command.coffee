@@ -23,7 +23,7 @@ module.exports =
         # Find shake file
         try
           shakeFile = require.resolve join process.cwd(), '.shake'
-        catch
+        catch e
           return log.error ".shake not found!"
         shakeConfig = require shakeFile
 
