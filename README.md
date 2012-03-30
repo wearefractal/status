@@ -26,8 +26,10 @@ Here is an example config demonstrating basic functionality:
 
 ```coffee-script
 shake = require 'shake'
-shake.target = 'your cool server'
 
+# This is a non-standard config used only within this config
+# you can make this file look like whatever you want as long as you export
+# your tasks and target
 app =
   sudo: "sudo" # Change this to "" to disable sudo
   parent: '/var/www/'
@@ -39,6 +41,7 @@ app.log = "/var/log/#{app.name}.log"
 
 
 module.exports =
+  target: 'your cool server'
   clean: (local, remote, done) ->
     remote.exec """
     #{app.sudo} rm -rf #{app.folder}

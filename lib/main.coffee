@@ -15,8 +15,6 @@ exec = (cmd, opt, cb) ->
 
 module.exports =
   # SSH stuff
-  target: null
-
   getRemote: (host, cb) ->
     remote = {}
     remote.exec = (cmd, cb) -> exec 'ssh', [host, cmd], cb

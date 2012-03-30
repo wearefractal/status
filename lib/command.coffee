@@ -1,7 +1,7 @@
 program = require 'commander'
 log = require 'loggo'
 async = require 'async'
-shake = require 'shake'
+shake = require '../index'
 {join} = require 'path'
 
 log.setName 'shake'
@@ -26,8 +26,8 @@ module.exports =
         catch e
           return log.error ".shake not found!"
         shakeConfig = require shakeFile
-
-        remote = shake.getRemote shake.target
+        return log.error "Missing target in configuration" unless shakeConfig.target?
+        remote = shake.getRemote shakeConfig.target
         local = shake.getLocal process.cwd()
 
         runTask = (task, cb) ->
