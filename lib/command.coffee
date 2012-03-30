@@ -2,7 +2,7 @@ program = require 'commander'
 log = require 'loggo'
 async = require 'async'
 shake = require '../index'
-{existsSync, join} = require 'path'
+{join} = require 'path'
 
 log.setName 'shake'
 package = require join __dirname, '../package.json'
@@ -21,8 +21,10 @@ module.exports =
         shake.mode = mode
 
         # Find shake file
-        shakeFile = require.resolve join process.cwd(), '.shake' unless existsSync shakeFile
-        return log.error ".shake not found!" unless existsSync shakeFile
+        try
+          shakeFile = require.resolve join process.cwd(), '.shake'
+        catch
+          return log.error ".shake not found!"
         shakeConfig = require shakeFile
 
         remote = shake.getRemote shake.target
