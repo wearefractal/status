@@ -26,7 +26,9 @@ module.exports =
         catch e
           return log.error ".shake not found!"
         shakeConfig = require shakeFile
-        return log.error "Missing target in configuration" unless shakeConfig.target?
+        return log.error "Missing target in .shake" if typeof shakeConfig.target isnt 'string'
+
+        log.info "Target: #{shakeConfig.target}"
         remote = shake.getRemote shakeConfig.target
         local = shake.getLocal process.cwd()
 

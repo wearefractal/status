@@ -25,8 +25,6 @@ Add a .roco.coffee or .roco.js file to your project root.
 Here is an example config demonstrating basic functionality:
 
 ```coffee-script
-shake = require 'shake'
-
 # This is a non-standard config used only within this config
 # you can make this file look like whatever you want as long as you export
 # your tasks and target
