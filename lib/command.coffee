@@ -1,7 +1,7 @@
 program = require 'commander'
 log = require 'loggo'
 async = require 'async'
-shake = require '../index'
+shake = require 'shake'
 {join} = require 'path'
 
 log.setName 'shake'
