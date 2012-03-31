@@ -50,4 +50,4 @@ module.exports =
 
     if program.tasks
       log.info "Available tasks:"
-      log.info "--". key for key, val of shakeConfig when typeof val is 'function'
+      log.info "--", key for key, val of shakeConfig when typeof val is 'function'
