@@ -7,40 +7,45 @@ shake = require '../index'
 log.setName 'shake'
 package = require join __dirname, '../package.json'
 
+getShakeFile = ->
+  # Find shake file
+  try
+    shakeFile = require.resolve join process.cwd(), '.shake'
+  catch e
+    return log.error ".shake not found!"
+  shakeConfig = require shakeFile
+  return log.error "Missing target in .shake" if typeof shakeConfig.target isnt 'string'
+  return shakeConfig
+
 module.exports =
   run: (argv) ->
     program
       .version(package.version)
       .usage '<tasks>'
 
-    program.command('* <mode>')
+    program.command('*')
       .description('Execute tasks')
       .action (tasks, mode) ->
-        tasks = tasks.split ':'
-        # TODO: fix shake.mode
-        shake.mode = mode
+        shakeConfig = getShakeFile()
+        return unless shakeConfig
+        if tasks is 'list'
+          log.info "Available tasks:"
+          log.info "--". key for key, val of shakeConfig when typeof val is 'function'
+        else
+          tasks = tasks.split ':'
+          log.info "Target: #{shakeConfig.target}"
+          remote = shake.getRemote shakeConfig.target
+          local = shake.getLocal process.cwd()
 
-        # Find shake file
-        try
-          shakeFile = require.resolve join process.cwd(), '.shake'
-        catch e
-          return log.error ".shake not found!"
-        shakeConfig = require shakeFile
-        return log.error "Missing target in .shake" if typeof shakeConfig.target isnt 'string'
+          runTask = (task, cb) ->
+            log.info "Executing '#{task}'..."
+            taskFn = shakeConfig[task]
+            return log.error "'#{task}' does not exist" if typeof taskFn isnt 'function'
+            taskFn local, remote, (err, res) ->
+              log.error err if err?
+              log.info res if res?
+              cb err, res
 
-        log.info "Target: #{shakeConfig.target}"
-        remote = shake.getRemote shakeConfig.target
-        local = shake.getLocal process.cwd()
-
-        runTask = (task, cb) ->
-          log.info "Executing '#{task}'..."
-          taskFn = shakeConfig[task]
-          return log.error "'#{task}' does not exist" if typeof taskFn isnt 'function'
-          taskFn local, remote, (err, res) ->
-            log.error err if err?
-            log.info res if res?
-            cb err, res
-
-        async.mapSeries tasks, runTask, (err, res) -> log.info "Tasks completed!"
+          async.mapSeries tasks, runTask, (err, res) -> log.info "Tasks completed!"
 
     program.parse argv
