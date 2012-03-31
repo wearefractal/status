@@ -17,35 +17,37 @@ getShakeFile = ->
   return log.error "Missing target in .shake" if typeof shakeConfig.target isnt 'string'
   return shakeConfig
 
+shakeConfig = getShakeFile()
+
 module.exports =
   run: (argv) ->
+    return unless shakeConfig
     program
       .version(package.version)
-      .usage '<tasks>'
+      .usage('<tasks>')
+      .option '-t, --tasks', 'list tests'
 
     program.command('*')
       .description('Execute tasks')
       .action (tasks, mode) ->
-        shakeConfig = getShakeFile()
-        return unless shakeConfig
-        if tasks is 'list'
-          log.info "Available tasks:"
-          log.info "--". key for key, val of shakeConfig when typeof val is 'function'
-        else
-          tasks = tasks.split ':'
-          log.info "Target: #{shakeConfig.target}"
-          remote = shake.getRemote shakeConfig.target
-          local = shake.getLocal process.cwd()
+        tasks = tasks.split ':'
+        log.info "Target: #{shakeConfig.target}"
+        remote = shake.getRemote shakeConfig.target
+        local = shake.getLocal process.cwd()
 
-          runTask = (task, cb) ->
-            log.info "Executing '#{task}'..."
-            taskFn = shakeConfig[task]
-            return log.error "'#{task}' does not exist" if typeof taskFn isnt 'function'
-            taskFn local, remote, (err, res) ->
-              log.error err if err?
-              log.info res if res?
-              cb err, res
+        runTask = (task, cb) ->
+          log.info "Executing '#{task}'..."
+          taskFn = shakeConfig[task]
+          return log.error "'#{task}' does not exist" if typeof taskFn isnt 'function'
+          taskFn local, remote, (err, res) ->
+            log.error err if err?
+            log.info res if res?
+            cb err, res
 
-          async.mapSeries tasks, runTask, (err, res) -> log.info "Tasks completed!"
+        async.mapSeries tasks, runTask, (err, res) -> log.info "Tasks completed!"
 
     program.parse argv
+
+    if program.tasks
+      log.info "Available tasks:"
+      log.info "--". key for key, val of shakeConfig when typeof val is 'function'
