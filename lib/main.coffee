@@ -7,7 +7,7 @@ exec = (cmd, opt, cb) ->
   child.stderr.on "data", (chunk) -> (res?=[]).push {type: 'stderr', message: String(chunk).trim()}
   child.stdout.on "data", (chunk) -> (res?=[]).push {type: 'stdout', message: String(chunk).trim()}
 
-  child.on "exit", -> cb? res
+  child.on "exit", (code) -> cb? res, code
 
 module.exports =
   # SSH stuff
