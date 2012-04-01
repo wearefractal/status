@@ -43,8 +43,8 @@ module.exports =
             res = if Array.isArray res then res else [res]
             for val in res
               log.info val unless val? and val.type?
-              log.error val.message if val.type is 'stderr'
-              log.info val.message if val.type is 'stdout'
+              log.error val.message if val? and val.type is 'stderr'
+              log.info val.message if val? and val.type is 'stdout'
             cb null, res
 
         async.mapSeries tasks, runTask, -> log.info "Tasks completed!"
