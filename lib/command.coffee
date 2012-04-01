@@ -40,13 +40,11 @@ module.exports =
           taskFn = shakeConfig[task]
           return log.error "'#{task}' does not exist" if typeof taskFn isnt 'function'
           taskFn local, remote, (res) ->
-            if res?
-              for val in res
-                unless res? and res.type?
-                  log.info res
-                else
-                  log.error res.message if res.type is 'stderr'
-                  log.info res.message if res.type is 'stdout'
+            res = if Array.isArray res then res else [res]
+            for val in res
+              log.info val unless val? and val.type?
+              log.error val.message if val.type is 'stderr'
+              log.info val.message if val.type is 'stdout'
             cb null, res
 
         async.mapSeries tasks, runTask, -> log.info "Tasks completed!"

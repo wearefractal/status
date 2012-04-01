@@ -1,7 +1,7 @@
 {
    "name":"shake",
    "description":"Deployment tool for node",
-   "version":"0.0.5",
+   "version":"0.0.6",
    "homepage":"http://github.com/wearefractal/shake",
    "repository":"git://github.com/wearefractal/shake.git",
    "author":"Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
