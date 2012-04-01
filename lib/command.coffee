@@ -25,26 +25,31 @@ module.exports =
     program
       .version(package.version)
       .usage('<tasks>')
-      .option '-t, --tasks', 'list tests'
+      .option '-t, --tasks', 'list tasks'
 
     program.command('*')
       .description('Execute tasks')
       .action (tasks, mode) ->
         tasks = tasks.split ':'
         log.info "Target: #{shakeConfig.target}"
-        remote = shake.getRemote shakeConfig.target
+        remote = shake.getRemote shakeConfig.target, shakeConfig.username
         local = shake.getLocal process.cwd()
 
         runTask = (task, cb) ->
           log.info "Executing '#{task}'..."
           taskFn = shakeConfig[task]
           return log.error "'#{task}' does not exist" if typeof taskFn isnt 'function'
-          taskFn local, remote, (err, res) ->
-            log.error err if err?
-            log.info res if res?
-            cb err, res
+          taskFn local, remote, (res) ->
+            if res?
+              for val in res
+                unless res? and res.type?
+                  log.info res
+                else
+                  log.error err if res.type is 'stderr'
+                  log.info if res.type is 'stdout'
+            cb null, res
 
-        async.mapSeries tasks, runTask, (err, res) -> log.info "Tasks completed!"
+        async.mapSeries tasks, runTask, -> log.info "Tasks completed!"
 
     program.parse argv
 

@@ -3,20 +3,17 @@ async = require 'async'
 
 exec = (cmd, opt, cb) ->
   child = spawn cmd, opt
-  err = null
   res = null
-  child.stderr.on "data", (chunk) -> (err?=[]).push String(chunk).trim()
-  child.stdout.on "data", (chunk) -> (res?=[]).push String(chunk).trim()
+  child.stderr.on "data", (chunk) -> (res?=[]).push {type: 'stderr', message: String(chunk).trim()}
+  child.stdout.on "data", (chunk) -> (res?=[]).push {type: 'stdout', message: String(chunk).trim()}
 
-  child.on "exit", ->
-    err = err.join '\n' if err?
-    res = res.join '\n' if res?
-    cb? err, res
+  child.on "exit", -> cb? res
 
 module.exports =
   # SSH stuff
-  getRemote: (host, cb) ->
+  getRemote: (host, username, cb) ->
     remote = {}
+    host = "#{username}@#{host}" if username?
     remote.exec = (cmd, cb) -> exec 'ssh', [host, cmd], cb
     remote.run = (cmds..., cb) -> async.mapSeries cmds, remote.exec, cb
     return remote
