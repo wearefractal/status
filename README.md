@@ -78,8 +78,8 @@ module.exports =
     remote.exec "tail -n 100 #{app.log}", done
 
   status: (local, remote, done) ->
-    remote.exec "ps -eo args | grep '#{app.name}' | grep -v grep", (err, res) ->
-      done err, if res then "Online" else "Offline"
+    remote.exec "ps -eo args | grep '#{app.name}' | grep -v grep", (res) ->
+      done if res then "Online" else "Offline"
 ```
 
 ### Task API
@@ -89,24 +89,22 @@ A task is a function that takes 3 arguments.
 ```coffee-script
 module.exports =
   sometask: (local, remote, done) ->
-    local.exec "whoami", (err, res) ->
-      # err = stderr
-      # res = stdout
-    local.run "whoami", "ls -la", (err, res) ->
-      # err = array of errors
-      # res = array of responses
+    local.exec "whoami", (res) ->
+      # res = array of stdout+stderr
+    local.run "whoami", "ls -la", (res) ->
+      # res = array of .exec res objects
       # .run is for executing multiple commands where you need the response
 
     local.exec """
     whoami
     ls -la
     mkdir test
-    """, (err, res) ->
-      # err = stderr for all commands
-      # res = stdout for all commands
-      # .exec will handle multiple commands if you don't care about the result
+    """, (res) ->
+      # res = array of stdout+stderr
+      # .exec will handle multiple commands if you dont care about each
+      # having its own res object
 
-      done err, res # Call this when the task is finished - logs its arguments
+      done res # Call this when the task is finished - logs its arguments
 ```
 
 ## LICENSE
