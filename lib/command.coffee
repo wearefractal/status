@@ -45,8 +45,8 @@ module.exports =
                 unless res? and res.type?
                   log.info res
                 else
-                  log.error err if res.type is 'stderr'
-                  log.info if res.type is 'stdout'
+                  log.error res.message if res.type is 'stderr'
+                  log.info res.message if res.type is 'stdout'
             cb null, res
 
         async.mapSeries tasks, runTask, -> log.info "Tasks completed!"
