@@ -29,7 +29,7 @@ module.exports =
 
     program.command('*')
       .description('Execute tasks')
-      .action (input, mode) ->
+      .action (input, app) ->
         tasks = []
         for task in input.split ':'
           if '[' in task and ']' in task
@@ -54,7 +54,7 @@ module.exports =
               log.error val.message if val.type is 'stderr'
               log.info val.message if val.type is 'stdout'
             cb null, res
-          taskFn local, remote, handleFn, args...
+          taskFn local, remote, handleFn, task.args...
 
         async.mapSeries tasks, runTask, -> log.info "Tasks completed!"
 
