@@ -17,7 +17,7 @@
 ## Usage
 
 ### Running tasks
-```$ shake setup:deploy:something:status:somethingelse```
+```$ shake setup:deploy:something["some arg", true, 2]:status```
 
 ### Defining tasks
 Add a .roco.coffee or .roco.js file to your project root.
@@ -84,7 +84,7 @@ module.exports =
 
 ### Task API
 
-A task is a function that takes 3 arguments.
+A task is a function that takes 3 arguments. Any arguments inside [ and ] will be applied to the task function after the initial 3.
 
 ```coffee-script
 module.exports =
