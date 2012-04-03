@@ -45,7 +45,7 @@ module.exports =
 
         runTask = (task, cb) ->
           log.info "Executing '#{task.name}'..."
-          taskFn = shakeConfig[task]
+          taskFn = shakeConfig[task.name]
           return log.error "'#{task.name}' does not exist" if typeof taskFn isnt 'function'
           handleFn = (res) ->
             res = if Array.isArray res then res else [res]
