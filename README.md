@@ -19,9 +19,29 @@
 ### Running tasks
 ```$ shake setup:deploy:something["some arg", true, 2]:status```
 
-### Defining tasks
+### Defining Tasks
+
 Add a .shake.coffee or .shake.js file to your project root.
 
+A task is a function that takes 3 arguments. Any arguments inside [ and ] will be applied to the task function after the initial 3.
+
+```coffee-script
+module.exports =
+  sometask: (local, remote, done) ->
+    # local = local machine
+    # remote = remote machine (defined in target)
+    local.exec """
+    whoami
+    ls -la
+    mkdir test
+    """, (res) ->
+      # res = array of stdout+stderr
+      remote.exec "ls -la", (res) ->
+        done res # Call this when the task is finished
+        # done() will start the next tasks and log its arguments
+```
+
+### Example config
 Here is an example config demonstrating basic functionality:
 
 ```coffee-script
@@ -81,53 +101,3 @@ module.exports =
     remote.exec "ps -eo args | grep '#{app.name}' | grep -v grep", (res) ->
       done if res then "Online" else "Offline"
 ```
-
-### Task API
-
-A task is a function that takes 3 arguments. Any arguments inside [ and ] will be applied to the task function after the initial 3.
-
-```coffee-script
-module.exports =
-  sometask: (local, remote, done) ->
-    local.exec "whoami", (res) ->
-      # res = array of stdout+stderr
-    local.run "whoami", "ls -la", (res) ->
-      # res = array of .exec res objects
-      # .run is for executing multiple commands where you need the response
-
-    local.exec """
-    whoami
-    ls -la
-    mkdir test
-    """, (res) ->
-      # res = array of stdout+stderr
-      # .exec will handle multiple commands if you dont care about each
-      # having its own res object
-
-      done res # Call this when the task is finished - logs its arguments
-```
-
-## LICENSE
-
-(MIT License)
-
-Copyright (c) 2012 Fractal <contact@wearefractal.com>
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
