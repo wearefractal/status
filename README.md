@@ -20,7 +20,7 @@
 ```$ shake setup:deploy:something["some arg", true, 2]:status```
 
 ### Defining tasks
-Add a .roco.coffee or .roco.js file to your project root.
+Add a .shake.coffee or .shake.js file to your project root.
 
 Here is an example config demonstrating basic functionality:
 
