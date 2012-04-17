@@ -21,7 +21,9 @@ module.exports = (shakeConfig) ->
       log.info "Executing '#{task.name}'..."
       taskFn = shakeConfig[task.name]
       return log.error "'#{task.name}' does not exist" if typeof taskFn isnt 'function'
-      handleFn = (res) -> cb null, res
+      handleFn = (res) ->
+        log.info res if res?
+        cb null, res
       taskFn local, remote, handleFn, task.args...
 
     async.mapSeries tasks, runTask, -> log.info "Tasks completed!"
