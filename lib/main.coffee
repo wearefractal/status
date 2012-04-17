@@ -18,8 +18,8 @@ module.exports =
   getRemote: (host, username, cb) ->
     remote = {}
     host = "#{username}@#{host}" if username?
-    remote.sexec = (cmd, cb) -> exec 'ssh', [host, cmd], false, cb
-    remote.exec = (cmd, cb) -> exec 'ssh', [host, cmd], true, cb
+    remote.sexec = (cmd, cb) -> exec 'ssh', [host, cmd], true, cb
+    remote.exec = (cmd, cb) -> exec 'ssh', [host, cmd], false, cb
     remote.run = (cmds..., cb) -> async.mapSeries cmds, remote.exec, cb
     return remote
 
@@ -27,7 +27,7 @@ module.exports =
   getLocal: (cwd) ->
     opt = cwd: cwd
     local = {}
-    local.sexec = (cmd, cb) -> exec 'sh', ['-c', cmd], false, cb
-    local.exec = (cmd, cb) -> exec 'sh', ['-c', cmd], true, cb
+    local.sexec = (cmd, cb) -> exec 'sh', ['-c', cmd], true, cb
+    local.exec = (cmd, cb) -> exec 'sh', ['-c', cmd], false, cb
     local.run = (cmds..., cb) -> async.mapSeries cmds, local.exec, cb
     return local
