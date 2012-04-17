@@ -2,7 +2,7 @@ async = require 'async'
 util = require 'util'
 {spawn} = require 'child_process'
 
-exec = (cmd, silent, opt, cb) ->
+exec = (cmd, opt, silent, cb) ->
   child = spawn cmd, opt
   res = null
   child.stderr.on "data", (chunk) -> (res?=[]).push {type: 'stderr', message: String(chunk).trim()}
