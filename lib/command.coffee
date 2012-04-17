@@ -22,7 +22,7 @@ module.exports =
     program.usage '<tasks>'
     
     program.option '-t, --tasks', 'list tasks'
-    program.command('*').action execute
+    program.command('*').action execute shakeConfig
     program.parse argv
 
     if program.tasks
