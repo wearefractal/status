@@ -1,5 +1,6 @@
 shake = require '../../index'
 async = require 'async'
+log = require 'loggo'
 
 module.exports = (input, app) ->
   tasks = []
