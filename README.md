@@ -37,8 +37,7 @@ module.exports =
     """, (res) ->
       # res = array of stdout+stderr
       remote.exec "ls -la", (res) ->
-        done res # Call this when the task is finished
-        # done() will start the next tasks and log its arguments
+        done() # Call this when the task is finished
 ```
 
 ### Example config
@@ -59,7 +58,7 @@ app.log = "/var/log/#{app.name}.log"
 
 
 module.exports =
-  target: 'your cool server'
+  target: 'cool server'
   clean: (local, remote, done) ->
     remote.exec """
     #{app.sudo} rm -rf #{app.folder}
@@ -98,6 +97,6 @@ module.exports =
     remote.exec "tail -n 100 #{app.log}", done
 
   status: (local, remote, done) ->
-    remote.exec "ps -eo args | grep '#{app.name}' | grep -v grep", (res) ->
+    remote.sexec "ps -eo args | grep '#{app.name}' | grep -v grep", (res) ->
       done if res then "Online" else "Offline"
 ```
