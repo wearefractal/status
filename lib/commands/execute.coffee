@@ -2,13 +2,31 @@ async = require "async"
 log = require "loggo"
 status = require "../main"
 
+parseOps = (ops) ->
+  # TODO: better way to do this - putting ]: in args will break it
+  temp = []
+  buff = ""
+  safe = false
+  for ch,i in ops
+    if ch is ':' and not safe
+      temp.push buff
+      buff = ""
+      continue
+    else if ch is '['
+      safe = true
+    else if ch is ']' and ops[i+1] is ':' or not ops[i+1]
+      safe = false
+    buff+=ch
+  temp.push buff
+  return temp
+
 module.exports = (pluginName, ops, app) ->
   plugin = status.list()[pluginName]
   return log.error "Plugin '#{pluginName}' is not installed" unless plugin
   return log.error "No operations specified" unless typeof ops is "string" and ops.length > 0
 
   operations = []
-  for op in ops.split ':'
+  for op in parseOps ops
     if '[' in op and ']' in op
       name = op[0...op.indexOf('[')]
       try

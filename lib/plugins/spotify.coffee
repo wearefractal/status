@@ -32,13 +32,34 @@ module.exports =
     version: "0.0.1"
     description: "Spotify controls/information"
 
-  next: (done) -> done getInterface().Next()
-  previous: (done) -> done getInterface().Previous()
-  toggle: (done) -> done getInterface().PlayPause()
-  pause: (done) -> done getInterface().Pause()
-  play: (done) -> done getInterface().Play()
-  stop: (done) -> done getInterface().Stop()
-  open: (done, uri) -> done getInterface().OpenUri uri
+  next: (done) ->
+    getInterface().Next()
+    done success: true
+
+  previous: (done) ->  
+    getInterface().Previous()
+    done success: true
+
+  toggle: (done) -> 
+    getInterface().PlayPause()
+    done success: true
+    
+  pause: (done) -> 
+    getInterface().Pause()
+    done success: true
+
+  play: (done) -> 
+    getInterface().Play()
+    done success: true
+
+  stop: (done) -> 
+    getInterface().Stop()
+    done success: true
+
+  open: (done, uri) ->
+    getInterface().OpenUri uri
+    done success: true
+
   playing: (done) ->
     getMeta (meta) ->
       meta.contentCreated = new Date meta.contentCreated
