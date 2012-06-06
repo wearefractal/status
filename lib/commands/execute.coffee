@@ -18,15 +18,9 @@ parseOps = (ops) ->
       safe = false
     buff+=ch
   temp.push buff
-  return temp
-
-module.exports = (pluginName, ops, app) ->
-  plugin = status.list()[pluginName]
-  return log.error "Plugin '#{pluginName}' is not installed" unless plugin
-  return log.error "No operations specified" unless typeof ops is "string" and ops.length > 0
 
   operations = []
-  for op in parseOps ops
+  for op in temp
     if '[' in op and ']' in op
       name = op[0...op.indexOf('[')]
       try
@@ -37,6 +31,14 @@ module.exports = (pluginName, ops, app) ->
       name = op
       args = []
     operations.push name: name, args: args
+  return operations
+
+module.exports = (pluginName, ops, app) ->
+  plugin = status.list()[pluginName]
+  return log.error "Plugin '#{pluginName}' is not installed" unless plugin
+  return log.error "No operations specified" unless typeof ops is "string" and ops.length > 0
+
+  operations = parseOps ops
   return log.error "No operations specified" unless operations.length > 0
 
   out = {}
