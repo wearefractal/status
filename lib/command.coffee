@@ -1,28 +1,18 @@
-program = require 'commander'
-log = require 'loggo'
-execute = require './commands/execute'
-list = require './commands/execute'
-{join} = require 'path'
+log = require "loggo"
+log.setName "status"
 
-log.setName 'shake'
-
-getShakeFile = ->
-  try
-    shakeFile = require.resolve join process.cwd(), '.shake'
-  catch e
-    return log.error ".shake not found!"
-  shakeConfig = require shakeFile
-  return log.error "Invalid .shake file" unless shakeConfig?
-  return log.error "Missing target in .shake" if typeof shakeConfig.target isnt 'string'
-  return shakeConfig
-
-shakeConfig = getShakeFile()
+status = require "./main"
+list = require "./commands/list"
+execute = require "./commands/execute"
 
 module.exports =
-  run: (argv) ->
-    return unless shakeConfig?
-    program.usage '<tasks>'
-    program.option '-t, --tasks', 'list tasks'
-    program.command('*').action execute shakeConfig
+  run: (argv, program) ->
+    status.loadDefaults()
+    program.version require("../package.json").version
+    program.usage "<plugin> <tasks>"
+    program.option "-p, --plugins", "list installed plugins"
+    program.command("*").action execute
     program.parse argv
-    list shakeConfig if program.tasks
+
+    list() if program.plugins
+    return

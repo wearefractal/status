@@ -1,29 +1,31 @@
-shake = require '../../index'
-async = require 'async'
-log = require 'loggo'
+async = require "async"
+log = require "loggo"
+{getPlugins} = require "../main"
 
-module.exports = (shakeConfig) ->
-  (input, app) ->
-    tasks = []
-    for task in input.split ':'
-      if '[' in task and ']' in task
-        name = task[0...task.indexOf('[')]
-        args = eval task[task.indexOf('[')..task.lastIndexOf(']')]
-      else
-        name = task
-        args = []
-      tasks.push name: name, args: args
-    log.info "Target: #{shakeConfig.target}"
-    remote = shake.getRemote shakeConfig.target, shakeConfig.username
-    local = shake.getLocal process.cwd()
+module.exports = (pluginName, ops, app) ->
+  plugins = getPlugins()
+  plugin = plugins[pluginName]
+  return log.error "Plugin '#{pluginName}' is not installed" unless plugin
+  return log.error "No operations specified" unless typeof ops is "string" and ops.length > 0
 
-    runTask = (task, cb) ->
-      log.info "Executing '#{task.name}'..."
-      taskFn = shakeConfig[task.name]
-      return log.error "'#{task.name}' does not exist" if typeof taskFn isnt 'function'
-      handleFn = (res) ->
-        log.info res if res?
-        cb null, res
-      taskFn local, remote, handleFn, task.args...
+  operations = []
+  for op in ops.split ':'
+    if '(' in op and ')' in op
+      name = op[0...op.indexOf('(')]
+      args = eval "[" + op[op.indexOf('(')..op.lastIndexOf(')')] + "]"
+    else
+      name = op
+      args = []
+    operations.push name: name, args: args
+  return log.error "No operations specified" unless operations.length > 0
 
-    async.mapSeries tasks, runTask, -> log.info "Tasks completed!"
+  out = {}
+  runOperation = (op, cb) ->
+    plugin.run op.name, op.args, (err, ret) ->
+      return cb err if err?
+      out[op.name] = ret
+      return cb()
+
+  async.forEach operations, runOperation, (err) ->
+    return log.error err.message if err?
+    console.log JSON.stringify out
