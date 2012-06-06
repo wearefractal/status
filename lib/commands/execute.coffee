@@ -1,10 +1,9 @@
 async = require "async"
 log = require "loggo"
-{getPlugins} = require "../main"
+status = require "../main"
 
 module.exports = (pluginName, ops, app) ->
-  plugins = getPlugins()
-  plugin = plugins[pluginName]
+  plugin = status.list()[pluginName]
   return log.error "Plugin '#{pluginName}' is not installed" unless plugin
   return log.error "No operations specified" unless typeof ops is "string" and ops.length > 0
 
@@ -21,10 +20,13 @@ module.exports = (pluginName, ops, app) ->
 
   out = {}
   runOperation = (op, cb) ->
-    plugin.run op.name, op.args, (err, ret) ->
-      return cb err if err?
-      out[op.name] = ret
-      return cb()
+    try
+      plugin.run op.name, op.args, (err, ret) ->
+        return cb err if err?
+        out[op.name] = ret
+        return cb()
+    catch err
+      return cb err
 
   async.forEach operations, runOperation, (err) ->
     return log.error err.message if err?

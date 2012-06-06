@@ -6,18 +6,13 @@ Plugin = require "./Plugin"
 plugins = {} # Keep out of reach so people have to use loadPlugin/removePlugin
 
 status =
-  loadDefaults: ->
-    pluginDir = join __dirname, "./plugins"
-    status.loadPlugin require join(pluginDir, file) for file in readdirSync pluginDir
-    return
+  run: (name, args..., cb) ->
+    return cb "Plugin #{name} is not installed" unless plugins[name]?
+    plugins[name].run args, cb
 
-  getPlugins: ->
-    out = {}
-    out[k]=v for k,v of plugins
-    return out
-
-  removePlugin: (name) -> delete plugins[name]
-  loadPlugin: (plugin) ->
+  list: -> plugins
+  remove: (name) -> delete plugins[name]
+  load: (plugin) ->
     return "Invalid plugin: Plugin must be an object" unless typeof plugin is "object"
 
     # Validate that plugin data exists
@@ -32,7 +27,7 @@ status =
     author = author.trim()
 
     return "Invalid plugin: Invalid version field" unless semver.valid version
-    return "Plugin '#{name}' already exists" if plugins[name]?
+    return "Plugin #{name} already exists" if plugins[name]?
 
     # Load plugin
     try
@@ -41,5 +36,8 @@ status =
       return e.message
 
     return true
+
+pluginDir = join __dirname, "./plugins"
+status.load require join(pluginDir, file) for file in readdirSync pluginDir
 
 module.exports = status

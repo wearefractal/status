@@ -14,7 +14,8 @@
       "loggo":"*",
       "semver":"*",
       "commander":"*",
-      "async":"*"
+      "async":"*",
+      "exec-sync":"*"
    },
    "devDependencies":{
       "mocha":"*",
@@ -24,7 +25,7 @@
       "test":"mocha --compilers coffee:coffee-script"
    },
    "engines":{
-      "node":">= 0.4.0"
+      "node":">= 0.6.0"
    },
    "licenses":[
       {

@@ -1,17 +1,20 @@
 log = require "loggo"
 log.setName "status"
 
-status = require "./main"
 list = require "./commands/list"
 execute = require "./commands/execute"
 
 module.exports =
   run: (argv, program) ->
-    status.loadDefaults()
     program.version require("../package.json").version
-    program.usage "<plugin> <tasks>"
+    program.usage "<plugin> <operations>"
     program.option "-p, --plugins", "list installed plugins"
     program.command("*").action execute
+    program.on '--help', ->
+      console.log '  Examples:\r\n'
+      console.log '    $ uptime total'
+      console.log '    $ processes grep("skype"):all\r\n'
+
     program.parse argv
 
     list() if program.plugins

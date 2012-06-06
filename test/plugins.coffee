@@ -9,9 +9,9 @@ describe 'loading', ->
       author: "Contra"
       version: "0.0.1"
 
-    res = status.loadPlugin plugin
+    res = status.load plugin
     res.should.equal true
-    status.removePlugin plugin.name
+    status.remove plugin.name
     done()
 
   it 'should not load with an invalid name', (done) ->
@@ -20,9 +20,9 @@ describe 'loading', ->
       author: "Contra"
       version: "0.0.1"
 
-    res = status.loadPlugin plugin
+    res = status.load plugin
     res.should.not.equal true
-    status.removePlugin plugin.name
+    status.remove plugin.name
     done()
 
   it 'should not load with an invalid version', (done) ->
@@ -31,9 +31,9 @@ describe 'loading', ->
       author: "Contra"
       version: "-1"
 
-    res = status.loadPlugin plugin
+    res = status.load plugin
     res.should.not.equal true
-    status.removePlugin plugin.name
+    status.remove plugin.name
     done()
     
 describe 'listing', ->
@@ -43,10 +43,10 @@ describe 'listing', ->
       author: "Contra"
       version: "0.0.1"
 
-    res = status.loadPlugin plugin
+    res = status.load plugin
     res.should.equal true
-    status.getPlugins()[plugin.name].meta.version.should.equal plugin.version
-    status.removePlugin plugin.name
+    status.list()[plugin.name].meta.version.should.equal plugin.version
+    status.remove plugin.name
     done()
 
 describe 'executing', ->
@@ -57,12 +57,12 @@ describe 'executing', ->
       version: "0.0.1"
       doStuff: (done, a, b) -> done a+b
 
-    res = status.loadPlugin plugin
+    res = status.load plugin
     res.should.equal true
-    plug = status.getPlugins()[plugin.name]
+    plug = status.list()[plugin.name]
     plug.run "doStuff", [1,2], (err, ret) ->
       should.not.exist err
       should.exist ret
       ret.should.equal 3
-      status.removePlugin plugin.name
+      status.remove plugin.name
       done()
