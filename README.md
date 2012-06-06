@@ -16,19 +16,25 @@
 </tr>
 </table>
 
+## Introduction
+
+Shh... It's okay - everything is going to be alright. status is here to make all of your nightmares go away. 
+
+status provides a flexible JSON interface on top of any commands/tasks/etc you want to automate. status operations can be run locally (via the CLI) or remotely (via the REST server).
+
 ## Usage
 
-### Using plugins
+### Command Line
 
 ```
 # Specify a plugin and the output you want back
 # In this example I specify the 'uptime' plugin with the 'total' operation
 $ status uptime total
-{"total":"05:18:13"}
+{"total":{"hours":7,"minutes":40,"seconds":6}}
 
 # You can pass arguments to operations too!
 # Arguments can be any javascript objects separated by commas
-$ status processes grep("skype")
+$ status processes grep["skype"]
 {"grep":[{"id":"1234", "name":"skype"}]}
 
 # Chaining operations will run them asynchronously
@@ -36,8 +42,62 @@ $ status cpu temp:usage:speed
 {"temp":107.6, "usage":10, "speed":2000}
 
 # Combine them all and have fun!
-$ status cpu temp("celsius"):usage("total","mhz"):speed("ghz")
+$ status cpu temp["celsius"]:usage["total","mhz"]:speed["ghz"]
 {"temp":42, "usage":100, "speed":2}
+```
+
+### REST API
+
+```
+# Specify a plugin and the output you want back
+# In this example I specify the 'uptime' plugin with the 'total' operation
+POST /status/uptime "total"
+{"total":{"hours":7,"minutes":40,"seconds":6}}
+
+# You can pass arguments to operations too!
+# Arguments can be any javascript objects separated by commas
+POST /status/uptime "grep['skype']"
+{"grep":[{"id":"1234", "name":"skype"}]}
+
+# Chaining operations will run them asynchronously
+POST /status/cpu "temp:usage:speed"
+{"temp":107.6, "usage":10, "speed":2000}
+
+# Combine them all and have fun!
+POST /status/cpu "temp['celsius']:usage['total','mhz']:speed['ghz']"
+{"temp":42, "usage":100, "speed":2}
+```
+
+## Writing Plugins
+
+Let's write a plugin called "coolkern" that returns the kernel version
+
+```coffee-script
+{exec} = require "child_process"
+
+coolkern =
+  meta:
+    name: "coolkern"
+    author: "YOU"
+    version: "0.0.1"
+
+  version: (done) ->
+    exec "uname -r", (err, stdout, stderr) ->
+      done stdout
+```
+
+Simple enough, right? Now add it to status 
+
+```coffee-script
+status = require 'status'
+status.load coolkern
+```
+
+Finished! Now you can test it out
+
+```
+$ status kernel version
+{"version":"3.3.7-1-ARCH"}
 ```
 
 ## LICENSE

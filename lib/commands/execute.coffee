@@ -9,9 +9,12 @@ module.exports = (pluginName, ops, app) ->
 
   operations = []
   for op in ops.split ':'
-    if '(' in op and ')' in op
-      name = op[0...op.indexOf('(')]
-      args = eval "[" + op[op.indexOf('(')..op.lastIndexOf(')')] + "]"
+    if '[' in op and ']' in op
+      name = op[0...op.indexOf('[')]
+      try
+        args = eval op[op.indexOf('[')..op.lastIndexOf(']')]
+      catch err
+        return log.error "Invalid arguments: #{err.message}"
     else
       name = op
       args = []
@@ -22,12 +25,12 @@ module.exports = (pluginName, ops, app) ->
   runOperation = (op, cb) ->
     try
       plugin.run op.name, op.args, (err, ret) ->
-        return cb err if err?
+        return cb "#{op.name}: #{err.message or err}" if err?
         out[op.name] = ret
         return cb()
     catch err
-      return cb err
+      return cb "#{op.name}: #{err.message or err}"
 
   async.forEach operations, runOperation, (err) ->
-    return log.error err.message if err?
+    return log.error err if err?
     console.log JSON.stringify out

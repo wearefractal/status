@@ -13,7 +13,7 @@ module.exports =
     program.on '--help', ->
       console.log '  Examples:\r\n'
       console.log '    $ uptime total'
-      console.log '    $ processes grep("skype"):all\r\n'
+      console.log '    $ cpu temp["celsius"]:usage:speed["ghz"]\r\n'
 
     program.parse argv
 

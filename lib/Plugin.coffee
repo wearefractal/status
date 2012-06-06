@@ -5,12 +5,8 @@ class Plugin extends EventEmitter
   operations: {}
 
   constructor: (plug) ->
-    # Clone data from input to this
-    @meta =
-      name: plug.name
-      author: plug.author
-      version: plug.version
-    @operations[k]=v for own k,v of plug when typeof v is "function"
+    @meta = plug.meta
+    @operations[k]=v for own k,v of plug when typeof v is "function" and k isnt "meta"
 
   run: (name, args, done) ->
     op = @operations[name]
