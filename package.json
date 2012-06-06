@@ -14,8 +14,10 @@
       "loggo":"*",
       "semver":"*",
       "commander":"*",
-      "async":"*",
-      "exec-sync":"*"
+      "async":"*"
+   },
+   "optionalDependencies":{
+      "dbus":"*"
    },
    "devDependencies":{
       "mocha":"*",

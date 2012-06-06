@@ -34,3 +34,4 @@ module.exports = (pluginName, ops, app) ->
   async.forEach operations, runOperation, (err) ->
     return log.error err if err?
     console.log JSON.stringify out
+    process.exit()

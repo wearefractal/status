@@ -6,9 +6,9 @@ Plugin = require "./Plugin"
 plugins = {}
 
 status =
-  run: (name, args..., cb) ->
-    return cb "Plugin #{name} is not installed" unless plugins[name]?
-    plugins[name].run args, cb
+  run: (plug, name, args..., cb) ->
+    return cb "Plugin #{name} is not installed" unless plugins[plug]?
+    plugins[plug].run name, args, cb
 
   list: -> plugins
   remove: (name) -> delete plugins[name]

@@ -1,5 +1,4 @@
 {exec} = require "child_process"
-os = require "os"
 
 runPs = (args, cb) ->
   exec "ps #{args}", (err, stdout, stderr) ->
