@@ -20,7 +20,7 @@
 
 Shh... It's okay - everything is going to be alright. status is here to make all of your nightmares go away. 
 
-status provides a flexible JSON interface on top of any commands/tasks/etc you want to automate. status operations can be run locally (via the CLI) or remotely (via the REST server).
+status provides a flexible JSON interface on top of any commands/tasks/sensors/signals/hardware/etc you want to automate. status operations can be run locally (via the CLI) or remotely (via the REST server).
 
 ## Usage
 
