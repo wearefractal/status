@@ -1,5 +1,8 @@
 {exec} = require "child_process"
 dbus = require "dbus"
+util = require '../util'
+
+throw "Spotify not installed" unless util.which "spotify"
 
 getMeta = (cb) ->
   exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata'", (err, stdout, stderr) ->
@@ -43,7 +46,7 @@ module.exports =
   toggle: (done) -> 
     getInterface().PlayPause()
     done success: true
-    
+
   pause: (done) -> 
     getInterface().Pause()
     done success: true

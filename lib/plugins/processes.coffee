@@ -1,4 +1,7 @@
 {exec} = require "child_process"
+util = require '../util'
+
+throw "ps not installed" unless util.which "ps"
 
 runPs = (args, cb) ->
   exec "ps #{args}", (err, stdout, stderr) ->

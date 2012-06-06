@@ -1,4 +1,34 @@
+os = require 'os'
+fs = require 'fs'
+{resolve, existsSync} = require 'path'
+
 util =
+  getPlatform: -> (if os.type().match(/^Win/) then 'win' else 'unix')
+  splitPath: (p) -> (if util.getPlatform() is "win" then p.split ";" else p.split ":")
+
+  which: (cmd) ->
+    return null unless cmd?
+    pathEnv = process.env.path or process.env.Path or process.env.PATH
+    pathArray = util.splitPath pathEnv
+    where = null
+    if cmd.search(/\//) is -1
+      pathArray.forEach (dir) ->
+        return if where
+        attempt = resolve dir + "/" + cmd
+        return where = attempt if existsSync attempt
+        if util.getPlatform() is "win"
+          baseAttempt = attempt
+          attempt = baseAttempt + ".exe"
+          return where = attempt if existsSync attempt
+          attempt = baseAttempt + ".cmd"
+          return where = attempt if existsSync attempt
+          attempt = baseAttempt + ".bat"
+          return where = attempt if existsSync attempt
+
+    return null if !existsSync(cmd) and !where
+
+    return where or resolve cmd
+
   calculateCPU: ({user, sys, idle}, pretty=false) ->
     out =
       total: user+sys+idle
