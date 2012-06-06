@@ -39,11 +39,11 @@ $ status processes grep["skype"]
 
 # Chaining operations will run them asynchronously
 $ status cpu temp:usage:speed
-{"temp":107.6, "usage":10, "speed":2000}
+{"temp":107.6, "usage":10, "speed":2100}
 
 # Combine them all and have fun!
 $ status cpu temp["celsius"]:usage["total","mhz"]:speed["ghz"]
-{"temp":42, "usage":100, "speed":2}
+{"temp":42, "usage":100, "speed":2.1}
 ```
 
 ### REST API
@@ -61,11 +61,11 @@ POST /status/uptime "grep['skype']"
 
 # Chaining operations will run them asynchronously
 POST /status/cpu "temp:usage:speed"
-{"temp":107.6, "usage":10, "speed":2000}
+{"temp":107.6, "usage":10, "speed":2100}
 
 # Combine them all and have fun!
 POST /status/cpu "temp['celsius']:usage['total','mhz']:speed['ghz']"
-{"temp":42, "usage":100, "speed":2}
+{"temp":42, "usage":100, "speed":2.1}
 ```
 
 ## Writing Plugins

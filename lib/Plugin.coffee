@@ -1,11 +1,9 @@
 {EventEmitter} = require 'events'
 
 class Plugin extends EventEmitter
-  meta: {}
-  operations: {}
-
   constructor: (plug) ->
     @meta = plug.meta
+    @operations = {}
     @operations[k]=v for own k,v of plug when typeof v is "function" and k isnt "meta"
 
   run: (name, args, done) ->

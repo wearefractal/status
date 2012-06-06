@@ -2,6 +2,9 @@ log = require "loggo"
 {list} = require "../main"
 
 module.exports = ->
-  log.info "Installed plugins:"
-  log.info " - #{name} #{plug.meta.version} by #{plug.meta.author}" for name,plug of list()
+  for name, plug of list()
+    name = " #{name}@#{plug.meta.version}"
+    name += " - #{plug.meta.description}" if typeof plug.meta.description is "string"
+    log.info name
+    log.info "   * #{name}" for name,val of plug.operations
   return
