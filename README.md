@@ -88,6 +88,14 @@ processes@0.0.1 - Process information
   * all
   * mine
   * grep
+wireless@0.0.1 - Wireless network information
+  * ssid
+  * bssid
+  * signal
+  * frequency
+  * rate
+  * security
+  * mode
 ram@0.0.1 - RAM information
   * total
   * free
@@ -102,6 +110,7 @@ os@0.0.1 - System information
   * kernel
   * cpus
   * network
+
 ```
 
 ## Writing Plugins
