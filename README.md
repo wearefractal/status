@@ -68,6 +68,42 @@ POST /status/cpu "temp['celsius']:usage['total','mhz']:speed['ghz']"
 {"temp":42, "usage":100, "speed":2.1}
 ```
 
+## Included Plugins
+
+```
+cpu@0.0.1 - CPU information
+  * temp
+  * usage
+  * speed
+spotify@0.0.1 - Spotify controls/information
+  * next
+  * previous
+  * toggle
+  * pause
+  * play
+  * stop
+  * open
+  * playing
+processes@0.0.1 - Process information
+  * all
+  * mine
+  * grep
+ram@0.0.1 - RAM information
+  * total
+  * free
+  * used
+os@0.0.1 - System information
+  * load
+  * uptime
+  * arch
+  * platform
+  * type
+  * hostname
+  * kernel
+  * cpus
+  * network
+```
+
 ## Writing Plugins
 
 Let's write a plugin called "coolkern" that returns the kernel version
