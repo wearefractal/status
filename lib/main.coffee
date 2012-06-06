@@ -40,6 +40,9 @@ status =
     return true
 
 pluginDir = join __dirname, "./plugins"
-status.load require join(pluginDir, file) for file in readdirSync pluginDir
+for file in readdirSync pluginDir
+  try # optional deps, dont fail if one doesnt load
+    plug = require join pluginDir, file
+    status.load plug
 
 module.exports = status
