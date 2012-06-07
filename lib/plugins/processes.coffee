@@ -17,7 +17,7 @@ runPs = (args, cb) ->
         mem: parseFloat mem
         vsz: parseInt vsz
         rss: parseInt rss
-        tty: (if tty is '?' then null else tty)
+        tty: tty unless tty is '?'
         stat: stat
         start: start
         time: time
@@ -34,3 +34,4 @@ module.exports =
   all: (done) -> runPs "aux", done
   mine: (done) -> runPs "ux", done
   grep: (done, text) -> runPs "aux | grep #{text}", done
+  top: (done, num=10) -> runPs "aux | sort -nr -k 3 -k 4 | head -#{num+1}", done
