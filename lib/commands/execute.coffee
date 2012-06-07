@@ -43,13 +43,10 @@ module.exports = (pluginName, ops, app) ->
 
   out = {}
   runOperation = (op, cb) ->
-    try
-      plugin.run op.name, op.args, (err, ret) ->
-        return cb "#{op.name}: #{err.message or err}" if err?
-        out[op.name] = ret
-        return cb()
-    catch err
-      return cb "#{op.name}: #{err.message or err}"
+    plugin.run op.name, op.args, (err, ret) ->
+      return cb "#{op.name}: #{err.message or err}" if err?
+      out[op.name] = ret
+      return cb()
 
   async.forEach operations, runOperation, (err) ->
     return log.error err if err?

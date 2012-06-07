@@ -29,7 +29,7 @@ util =
 
     return where or resolve cmd
 
-  calculateCPU: ({user, sys, idle}, pretty=false) ->
+  calculateCPU: ({user, nice, sys, idle}, pretty=false) ->
     out =
       total: user+sys+idle
       free: idle
@@ -38,13 +38,15 @@ util =
         user: user
         system: sys
         
-    # TODO: this is all incorrect
-    if pretty
-      out.free = "#{Math.floor out.free/out.total}%"
-      out.used.total = "#{Math.floor out.total/out.used.total}%"
-      out.used.user = "#{Math.floor out.total/out.used.user}%"
-      out.used.system = "#{Math.floor out.total/out.used.system}%"
-    return out
+    return out unless pretty
+    # TODO: these calculations suck and are completely incorrect
+    nout =
+      free: "#{Math.floor (out.free/out.total)*100 }%"
+      used:
+        total: "#{Math.floor (out.used.total/out.total)*100  }%"
+        user: "#{Math.floor (out.used.user/out.total)*10 }%"
+        system: "#{Math.floor (out.used.system/out.total)*10 }%"
+    return nout
 
   convertSeconds: (secs) ->
     days = Math.floor secs / 86400

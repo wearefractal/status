@@ -5,7 +5,7 @@ util = require '../util'
 throw "Spotify not installed" unless util.which "spotify"
 
 getMeta = (cb) ->
-  exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata'", (err, stdout, stderr) ->
+  exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata'", (err, stdout) ->
     throw err if err?
     out = {}
     for def in stdout.match /entry\(([\S\s]*?)\)/ig

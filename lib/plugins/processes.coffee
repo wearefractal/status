@@ -1,9 +1,8 @@
 {exec} = require "child_process"
 util = require '../util'
 
-throw "ps not installed" unless util.which "ps"
-
 runPs = (args, cb) ->
+  throw "ps not installed" unless util.which "ps"
   exec "ps #{args}", (err, stdout, stderr) ->
     throw err if err?
     [head, processes..., tail] = stdout.split '\n'

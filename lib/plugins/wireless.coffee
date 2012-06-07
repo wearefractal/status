@@ -1,7 +1,11 @@
 {exec} = require "child_process"
 util = require '../util'
 
-throw "nmcli not installed" unless util.which "nmcli"
+runNm = (fields, cb) ->
+  throw "nmcli not installed" unless util.which "nmcli"
+  exec "nmcli -t -f active,#{fields} dev wifi", (err, stdout) ->
+    throw err if err? 
+    cb (line for line in stdout.split('\n') when line.indexOf("yes") is 0)[0]
 
 module.exports =
   meta:
@@ -11,46 +15,32 @@ module.exports =
     description: "Wireless network information"
 
   ssid: (done) ->
-    exec "nmcli -t -f active,ssid dev wifi", (err, stdout, stderr) ->
-      throw err if err?
-      [activeline] = (line for line in stdout.split('\n') when line.indexOf("yes") is 0)
+    runNm "ssid", (activeline) ->
       ssid = activeline[activeline.indexOf("'")+1...activeline.lastIndexOf("'")]
       done ssid
 
   bssid: (done) ->
-    exec "nmcli -t -f active,bssid dev wifi", (err, stdout, stderr) ->
-      throw err if err?
-      [activeline] = (line for line in stdout.split('\n') when line.indexOf("yes") is 0)
-      activeline = line.replace '\\:', '-'
-      done activeline.split(':')[1]
+    runNm "bssid", (activeline) ->
+      [head, bssid...] = activeline.replace(/\\/g,'').split ':'
+      done bssid.join ':'
 
   # TODO: pretty format for signal, freq, and rate
   signal: (done) ->
-    exec "nmcli -t -f active,signal dev wifi", (err, stdout, stderr) ->
-      throw err if err?
-      [activeline] = (line for line in stdout.split('\n') when line.indexOf("yes") is 0)
+    runNm "signal", (activeline) ->
       done parseInt activeline.split(':')[1]
 
   frequency: (done) ->
-    exec "nmcli -t -f active,freq dev wifi", (err, stdout, stderr) ->
-      throw err if err?
-      [activeline] = (line for line in stdout.split('\n') when line.indexOf("yes") is 0)
+    runNm "freq", (activeline) ->
       done parseInt activeline.split(':')[1].split(' ')[0]
 
   rate: (done) ->
-    exec "nmcli -t -f active,rate dev wifi", (err, stdout, stderr) ->
-      throw err if err?
-      [activeline] = (line for line in stdout.split('\n') when line.indexOf("yes") is 0)
+    runNm "rate", (activeline) ->
       done parseInt activeline.split(':')[1].split(' ')[0]
 
   security: (done) ->
-    exec "nmcli -t -f active,security dev wifi", (err, stdout, stderr) ->
-      throw err if err?
-      [activeline] = (line for line in stdout.split('\n') when line.indexOf("yes") is 0)
+    runNm "security", (activeline) ->
       done activeline.split(':')[1]
 
   mode: (done) ->
-    exec "nmcli -t -f active,mode dev wifi", (err, stdout, stderr) ->
-      throw err if err?
-      [activeline] = (line for line in stdout.split('\n') when line.indexOf("yes") is 0)
+    runNm "mode", (activeline) ->
       done activeline.split(':')[1]

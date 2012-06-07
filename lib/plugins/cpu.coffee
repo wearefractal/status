@@ -17,7 +17,6 @@ module.exports =
     if format is "raw"
       done (calculateCPU cpu.times for cpu in cpus)
     else if format is "pretty"
-      # TODO: implement properly
       done (calculateCPU cpu.times, true for cpu in cpus)
     else
       throw "Invalid format specified"

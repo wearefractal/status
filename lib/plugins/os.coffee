@@ -1,5 +1,6 @@
 os = require "os"
-{readableSpeed, convertSeconds, prettySeconds} = require "../util"
+{exec} = require "child_process"
+{readableSpeed, convertSeconds, prettySeconds} = util = require "../util"
 
 module.exports =
   meta:
@@ -26,6 +27,16 @@ module.exports =
   type: (done) -> done os.type()
   hostname: (done) -> done os.hostname()
   kernel: (done) -> done os.release()
+  environment: (done) -> done process.env
+  
+  drives: (done) ->
+    throw "df not installed" unless util.which "df"
+    throw "awk not installed" unless util.which "awk"
+    exec "df | awk '{print $1}'", (err, stdout) ->
+      throw err if err?
+      out = {}
+      [head, names..., tail] = stdout.split '\n'
+      done names
 
   cpus: (done, format="raw") ->
     if format is "raw"
