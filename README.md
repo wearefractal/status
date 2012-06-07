@@ -26,44 +26,44 @@ status provides a flexible JSON interface on top of any commands/tasks/sensors/s
 
 ### Command Line
 
-```
-# Specify a plugin and the output you want back
-# In this example I specify the 'uptime' plugin with the 'total' operation
+```javascript
+// Specify a plugin and the output you want back
+// In this example I specify the 'uptime' plugin with the 'total' operation
 $ status uptime total
 {"total":{"hours":7,"minutes":40,"seconds":6}}
 
-# You can pass arguments to operations too!
-# Arguments can be any javascript objects separated by commas
+// You can pass arguments to operations too!
+// Arguments can be any javascript objects separated by commas
 $ status processes grep["skype"]
-{"grep":[{"id":"1234", "name":"skype"}]}
+{"grep":[{"id":1234, "name":"skype"}]}
 
-# Chaining operations will run them asynchronously
+// Chaining operations will run them asynchronously
 $ status cpu temp:usage:speed
 {"temp":107.6, "usage":10, "speed":2100}
 
-# Combine them all and have fun!
+// Combine them all and have fun!
 $ status cpu temp["celsius"]:usage["total","mhz"]:speed["ghz"]
 {"temp":42, "usage":100, "speed":2.1}
 ```
 
 ### REST API
 
-```
-# Specify a plugin and the output you want back
-# In this example I specify the 'uptime' plugin with the 'total' operation
+```javascript
+// Specify a plugin and the output you want back
+// In this example I specify the 'uptime' plugin with the 'total' operation
 POST /status/uptime "total"
 {"total":{"hours":7,"minutes":40,"seconds":6}}
 
-# You can pass arguments to operations too!
-# Arguments can be any javascript objects separated by commas
+// You can pass arguments to operations too!
+// Arguments can be any javascript objects separated by commas
 POST /status/uptime "grep['skype']"
-{"grep":[{"id":"1234", "name":"skype"}]}
+{"grep":[{"id":1234, "name":"skype"}]}
 
-# Chaining operations will run them asynchronously
+// Chaining operations will run them asynchronously
 POST /status/cpu "temp:usage:speed"
 {"temp":107.6, "usage":10, "speed":2100}
 
-# Combine them all and have fun!
+// Combine them all and have fun!
 POST /status/cpu "temp['celsius']:usage['total','mhz']:speed['ghz']"
 {"temp":42, "usage":100, "speed":2.1}
 ```
