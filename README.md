@@ -96,10 +96,11 @@ wireless@0.0.1 - Wireless network information
   * rate
   * security
   * mode
+hd@0.0.1 - Hard Disk information
+  * temp
+  * usage
 ram@0.0.1 - RAM information
-  * total
-  * free
-  * used
+  * usage
 os@0.0.1 - System information
   * load
   * uptime
@@ -108,9 +109,14 @@ os@0.0.1 - System information
   * type
   * hostname
   * kernel
+  * environment
+  * drives
   * cpus
   * network
-
+node@0.0.1 - Node information
+  * version
+  * environment
+  * prefix
 ```
 
 ## Writing Plugins
