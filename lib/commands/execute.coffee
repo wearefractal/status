@@ -45,10 +45,16 @@ module.exports = (pluginName, ops, app) ->
   runOperation = (op, cb) ->
     plugin.run op.name, op.args, (err, ret) ->
       return cb "#{op.name}: #{err.message or err}" if err?
-      out[op.name] = ret
+      if app.parent.text
+        out = ret
+      else
+        out[op.name] = ret
       return cb()
 
   async.forEach operations, runOperation, (err) ->
     return log.error err if err?
-    console.log JSON.stringify out
+    if app.parent.text
+      console.log out
+    else
+      console.log JSON.stringify out
     process.exit()

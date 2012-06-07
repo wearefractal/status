@@ -9,6 +9,7 @@ module.exports =
     program.version require("../package.json").version
     program.usage "<plugin> <operations>"
     program.option "-p, --plugins", "list installed plugins"
+    program.option "-t, --text", "output as plain text"
     program.command("*").action execute
     program.on '--help', ->
       console.log '  Examples:\r\n'
