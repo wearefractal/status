@@ -88,6 +88,10 @@ processes@0.0.1 - Process information
   * all
   * mine
   * grep
+  * top
+network@0.0.1 - Network information
+  * upstream
+  * downstream
 wireless@0.0.1 - Wireless network information
   * ssid
   * bssid
@@ -99,8 +103,14 @@ wireless@0.0.1 - Wireless network information
 hd@0.0.1 - Hard Disk information
   * temp
   * usage
+  * total
+  * free
+  * used
 ram@0.0.1 - RAM information
   * usage
+  * total
+  * free
+  * used
 os@0.0.1 - System information
   * load
   * uptime
