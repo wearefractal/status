@@ -33,11 +33,11 @@ parseOps = (ops) ->
     operations.push name: name, args: args
   return operations
 
-module.exports = (pluginName, ops, app) ->
-  plugin = status.list()[pluginName]
-  return log.error "Plugin '#{pluginName}' is not installed" unless plugin
+module.exports = (ops, {name, plain}) ->
+  process.env.PLAIN_TEXT = true if plain
+  plugin = status.list()[name]
+  return log.error "Plugin '#{name}' is not installed" unless plugin
   return log.error "No operations specified" unless typeof ops is "string" and ops.length > 0
-
   operations = parseOps ops
   return log.error "No operations specified" unless operations.length > 0
 
@@ -45,7 +45,7 @@ module.exports = (pluginName, ops, app) ->
   runOperation = (op, cb) ->
     plugin.run op.name, op.args, (err, ret) ->
       return cb "#{op.name}: #{err.message or err}" if err?
-      if app.parent.text
+      if process.env.PLAIN_TEXT
         out = ret
       else
         out[op.name] = ret
@@ -53,7 +53,7 @@ module.exports = (pluginName, ops, app) ->
 
   async.forEach operations, runOperation, (err) ->
     return log.error err if err?
-    if app.parent.text
+    if process.env.PLAIN_TEXT
       console.log out
     else
       console.log JSON.stringify out

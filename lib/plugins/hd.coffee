@@ -32,3 +32,12 @@ module.exports =
 
   usage: (done, format="raw") ->
     runCommand (format is "pretty"), done
+
+  total: (done, format="raw") ->
+    runCommand (format is "pretty"), (drives) -> done drives.rootfs.total
+
+  free: (done, format="raw") ->
+    runCommand (format is "pretty"), (drives) -> done drives.rootfs.free
+
+  used: (done, format="raw") ->
+    runCommand (format is "pretty"), (drives) -> done drives.rootfs.used

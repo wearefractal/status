@@ -9,12 +9,22 @@ module.exports =
     version: "0.0.1"
     description: "System information"
   
-  load: (done) -> done (Math.floor(num*1000)/1000 for num in os.loadavg())
+  load: (done) -> 
+    calc = (Math.floor(num*1000)/1000 for num in os.loadavg())
+    avg = Math.floor((calc.reduce((t,s)->t+s)/calc.length)*100)/100
+    done (if process.env.PLAIN_TEXT then avg else calc)
 
   uptime: (done, format="raw") ->
     secs = os.uptime()
     if format is "raw"
-      done convertSeconds secs
+      time = convertSeconds secs
+      if process.env.PLAIN_TEXT
+        time.days ?= "00"
+        time.hours ?= "00"
+        time.minutes ?= "00"
+        time.seconds ?= "00"
+        time = "#{time.days}:#{time.hours}:#{time.minutes}:#{time.seconds}"
+      done time
     else if format is "pretty"
       done prettySeconds secs
     else if format is "full"
@@ -39,11 +49,7 @@ module.exports =
       done names
 
   cpus: (done, format="raw") ->
-    if format is "raw"
-      done ({model:cpu.model,speed:cpu.speed} for cpu in os.cpus())
-    else if format is "pretty"
-      done ({model:cpu.model,speed:readableSpeed(cpu.speed)} for cpu in os.cpus())
-    else
-      throw "Invalid format specified"
+    calc = (cpu.model for cpu in os.cpus())
+    done (if process.env.PLAIN_TEXT then calc[0] else calc)
 
   network: (done) -> done os.networkInterfaces()
