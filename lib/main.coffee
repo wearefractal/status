@@ -7,6 +7,7 @@ plugins = {}
 
 status =
   plugins: -> plugins
+  plugin: (name) -> plugins[name]
   remove: (name) -> delete plugins[name]
   load: (plugin) ->
     # Validate plugin

@@ -49,7 +49,7 @@ describe 'listing', ->
 
     res = status.load plugin
     res.should.equal true
-    status.plugins()[plugin.meta.name].details().version.should.equal plugin.meta.version
+    status.plugin(plugin.meta.name).details().version.should.equal plugin.meta.version
     status.remove plugin.meta.name
     done()
 
@@ -64,7 +64,7 @@ describe 'executing', ->
 
     res = status.load plugin
     res.should.equal true
-    plug = status.plugins()[plugin.meta.name]
+    plug = status.plugin plugin.meta.name
     op = plug.operation "doStuff" 
     op.on 'error', done
     op.on 'done', (ret) ->
