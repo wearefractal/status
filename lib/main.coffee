@@ -6,11 +6,7 @@ Plugin = require "./Plugin"
 plugins = {}
 
 status =
-  run: (plug, name, args..., cb) ->
-    return cb "Plugin #{name} is not installed" unless plugins[plug]?
-    plugins[plug].run name, args, cb
-
-  list: -> plugins
+  plugins: -> plugins
   remove: (name) -> delete plugins[name]
   load: (plugin) ->
     # Validate plugin
@@ -42,6 +38,7 @@ pluginDir = join __dirname, "./plugins"
 for file in readdirSync pluginDir
   try # optional deps, dont fail if one doesnt load
     plug = require join pluginDir, file
-    status.load plug
+    msg = status.load plug
+    console.log msg, file unless msg is true
 
 module.exports = status

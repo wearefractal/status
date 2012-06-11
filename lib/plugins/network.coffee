@@ -8,22 +8,24 @@ module.exports =
     version: "0.0.1"
     description: "Network information"
 
-  upstream: (done, int="eth0", format="raw") ->
-    readFile "/sys/class/net/#{int}/statistics/tx_bytes", (err, res) ->
+  upstream: (int="eth0", format="raw") ->
+    readFile "/sys/class/net/#{int}/statistics/tx_bytes", (err, res) =>
+      return @error err if err?
       val = parseInt res
       if format is "raw"
-        done val
+        @done val
       else if format is "pretty"
-        done readableSize val
+        @done readableSize val
       else
-        throw "Invalid format specified"
+        @error "Invalid format specified"
 
   downstream: (done, int="eth0", format="raw") ->
-    readFile "/sys/class/net/#{int}/statistics/rx_bytes", (err, res) ->
+    readFile "/sys/class/net/#{int}/statistics/rx_bytes", (err, res) =>
+      return @error err if err?
       val = parseInt res
       if format is "raw"
-        done val
+        @done val
       else if format is "pretty"
-        done readableSize val
+        @done readableSize val
       else
-        throw "Invalid format specified"
+        @error "Invalid format specified"

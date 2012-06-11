@@ -9,25 +9,25 @@ module.exports =
     version: "0.0.1"
     description: "CPU information"
 
-  temp: (done, format="raw") ->
+  temp: (format="raw") ->
     # TODO: implement
 
-  usage: (done, format="raw") ->
+  usage: (format="raw") ->
     cpus = os.cpus()
     if format is "raw"
       calc = (calculateCPU cpu.times for cpu in cpus)
     else if format is "pretty"
       calc = (calculateCPU cpu.times, true for cpu in cpus)
     else
-      throw "Invalid format specified"
-    done (if process.env.PLAIN_TEXT then calc[0] else calc)
+      @error "Invalid format specified"
+    @done (if process.env.PLAIN_TEXT then calc[0] else calc)
 
-  speed: (done, format="raw") ->
+  speed: (format="raw") ->
     cpus = os.cpus()
     if format is "raw"
       calc = (cpu.speed for cpu in cpus)
     else if format is "pretty"
       calc = (readableSpeed cpu.speed for cpu in cpus)
     else
-      throw "Invalid format specified"
-    done (if process.env.PLAIN_TEXT then calc[0] else calc)
+      @error "Invalid format specified"
+    @done (if process.env.PLAIN_TEXT then calc[0] else calc)

@@ -8,9 +8,10 @@ module.exports =
     version: "0.0.1"
     description: "text to speech using festival"
 
-  speak: (done, text)->
-    throw 'festival is not installed' unless which 'festival'
-    throw 'echo is not installed' unless which 'echo'
-    exec "echo #{text} | festival --tts", (err, stdout)->
-      throw err if err
-      done {spoke: text}
+  speak: (text)->
+    return @error 'Missing text argument' unless typeof text is 'string'
+    return @error 'festival is not installed' unless which 'festival'
+    return @error 'echo is not installed' unless which 'echo'
+    exec "echo #{text} | festival --tts", (err, stdout) =>
+      return @error err if err
+      @done {spoke: text}

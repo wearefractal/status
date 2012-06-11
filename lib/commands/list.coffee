@@ -1,21 +1,7 @@
 status = require "../main"
 
-parseArgs = (fn) ->
-  str = fn.toString()
-  return str[str.indexOf('(')+1...str.indexOf(')')].match /([^\s,]+)/g
-
 module.exports = ({json}) ->
-  plugins = []
-  for name, plug of status.list()
-    out =
-      name: plug.meta.name
-      author: plug.meta.author
-      version: plug.meta.version
-      description: plug.meta.description
-      operations: []
-    out.operations.push {name:name,arguments:parseArgs(fn)[1..]} for name,fn of plug.operations
-    plugins.push out
-
+  plugins = (plug.details() for name, plug of status.plugins())
   if json
     console.log JSON.stringify plugins
   else

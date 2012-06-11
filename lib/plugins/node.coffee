@@ -5,6 +5,6 @@ module.exports =
     version: "0.0.1"
     description: "Node information"
 
-  version: (done) -> done process.versions
-  environment: (done) -> done process.env.NODE_ENV
-  prefix: (done) -> done process.installPrefix
+  version: -> @done process.versions
+  environment: -> @done process.env.NODE_ENV
+  prefix: -> @done process.installPrefix

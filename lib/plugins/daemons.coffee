@@ -50,29 +50,29 @@ module.exports =
     version: "0.0.1"
     description: "Daemon management through rc.d"
 
-  list: (done)->
-    boiler "rc.d list", listFormat, done
+  list: ->
+    boiler "rc.d list", listFormat, @done
 
-  started: (done)->
-    boiler "rc.d -s list", listFormat, done
+  started: ->
+    boiler "rc.d -s list", listFormat, @done
 
-  stopped: (done)->
-    boiler "rc.d -S list", listFormat, done
+  stopped: ->
+    boiler "rc.d -S list", listFormat, @done
 
-  auto: (done)->
-    boiler "rc.d -a list", listFormat, done
+  auto: ->
+    boiler "rc.d -a list", listFormat, @done
 
-  noAuto: (done)->
-    boiler "rc.d -A list", listFormat, done
+  noAuto: ->
+    boiler "rc.d -A list", listFormat, @done
 
-  start: (done, target)->
-    boiler "rc.d start #{target}", commandFormat, done
+  start: (target)->
+    boiler "rc.d start #{target}", commandFormat, @done
 
-  stop: (done, target)->
-    boiler "rc.d start #{target}", commandFormat, done
+  stop: (target)->
+    boiler "rc.d start #{target}", commandFormat, @done
 
-  restart: (done, target)->
-    boiler "rc.d start #{target}", commandFormat, done
+  restart: (target)->
+    boiler "rc.d start #{target}", commandFormat, @done
 
-  status: (done, target)->
-    boiler "rc.d status #{target}", statusFormat, done
+  status: (target)->
+    boiler "rc.d status #{target}", statusFormat, @done

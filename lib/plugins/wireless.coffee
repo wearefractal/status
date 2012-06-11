@@ -14,33 +14,33 @@ module.exports =
     version: "0.0.1"
     description: "Wireless network information"
 
-  ssid: (done) ->
-    runNm "ssid", (active) ->
+  ssid: ->
+    runNm "ssid", (active) =>
       ssid = active[active.indexOf("'")+1...active.lastIndexOf("'")]
-      done ssid
+      @done ssid
 
-  bssid: (done) ->
-    runNm "bssid", (active) ->
+  bssid: ->
+    runNm "bssid", (active) =>
       [head, bssid...] = active.replace(/\\/g,'').split ':'
-      done bssid.join ':'
+      @done bssid.join ':'
 
   # TODO: pretty format for signal, freq, and rate
-  signal: (done) ->
-    runNm "signal", (active) ->
-      done parseInt active.split(':')[1]
+  signal: ->
+    runNm "signal", (active) =>
+      @done parseInt active.split(':')[1]
 
-  frequency: (done) ->
-    runNm "freq", (active) ->
-      done parseInt active.split(':')[1].split(' ')[0]
+  frequency: ->
+    runNm "freq", (active) =>
+      @done parseInt active.split(':')[1].split(' ')[0]
 
-  rate: (done) ->
-    runNm "rate", (active) ->
-      done parseInt active.split(':')[1].split(' ')[0]
+  rate: ->
+    runNm "rate", (active) =>
+      @done parseInt active.split(':')[1].split(' ')[0]
 
-  security: (done) ->
-    runNm "security", (active) ->
-      done active.split(':')[1]
+  security: ->
+    runNm "security", (active) =>
+      @done active.split(':')[1]
 
-  mode: (done) ->
-    runNm "mode", (active) ->
-      done active.split(':')[1]
+  mode: ->
+    runNm "mode", (active) =>
+      @done active.split(':')[1]

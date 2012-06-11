@@ -24,20 +24,20 @@ module.exports =
     version: "0.0.1"
     description: "Hard Disk information"
 
-  temp: (done, unit="C") ->
-    throw "hddtemp not installed" unless which "hddtemp"
-    exec "hddtemp /dev/sda -n --unit=#{unit}", (err, stdout) ->
-      throw err if err?
-      done parseInt stdout
+  temp: (unit="C") ->
+    return @error "hddtemp not installed" unless which "hddtemp"
+    exec "hddtemp /dev/sda -n --unit=#{unit}", (err, stdout) =>
+      return @error err if err?
+      @done parseInt stdout
 
-  usage: (done, format="raw") ->
-    runCommand (format is "pretty"), done
+  usage: (format="raw") ->
+    runCommand (format is "pretty"), @done
 
-  total: (done, format="raw") ->
-    runCommand (format is "pretty"), (drives) -> done drives.rootfs.total
+  total: (format="raw") ->
+    runCommand (format is "pretty"), (drives) => @done drives.rootfs.total
 
-  free: (done, format="raw") ->
-    runCommand (format is "pretty"), (drives) -> done drives.rootfs.free
+  free: (format="raw") ->
+    runCommand (format is "pretty"), (drives) => @done drives.rootfs.free
 
-  used: (done, format="raw") ->
-    runCommand (format is "pretty"), (drives) -> done drives.rootfs.used
+  used: (format="raw") ->
+    runCommand (format is "pretty"), (drives) => @done drives.rootfs.used

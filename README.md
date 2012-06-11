@@ -106,6 +106,16 @@ hd@0.0.1 - Hard Disk information
   * total
   * free
   * used
+daemons@0.0.1 - Daemon management through rc.d
+  * list
+  * started
+  * stopped
+  * auto
+  * noAuto
+  * start
+  * stop
+  * restart
+  * status
 ram@0.0.1 - RAM information
   * usage
   * total
@@ -127,6 +137,8 @@ node@0.0.1 - Node information
   * version
   * environment
   * prefix
+speech@0.0.1 - text to speech using festival
+  * speak
 ```
 
 ## Writing Plugins
@@ -142,9 +154,9 @@ coolkern =
     author: "YOU"
     version: "0.0.1"
 
-  version: (done) ->
-    exec "uname -r", (err, stdout, stderr) ->
-      done stdout
+  version: ->
+    exec "uname -r", (err, stdout) => 
+      @done stdout
 ```
 
 Simple enough, right? Now add it to status 

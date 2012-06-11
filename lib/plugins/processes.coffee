@@ -31,7 +31,7 @@ module.exports =
     version: "0.0.1"
     description: "Process information"
 
-  all: (done) -> runPs "aux", done
-  mine: (done) -> runPs "ux", done
-  grep: (done, text) -> runPs "aux | grep #{text}", done
-  top: (done, num=10) -> runPs "aux | sort -nr -k 3 -k 4 | head -#{num+1}", done
+  all: -> runPs "aux", @done
+  mine: -> runPs "ux", @done
+  grep: (text) -> runPs "aux | grep #{text}", @done
+  top: (num=10) -> runPs "aux | sort -nr -k 3 -k 4 | head -#{num+1}", @done

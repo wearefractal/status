@@ -8,45 +8,45 @@ module.exports =
     version: "0.0.1"
     description: "RAM information"
 
-  usage: (done, format="raw") ->
+  usage: (format="raw") ->
     total = os.totalmem()
     free = os.freemem()
     used = total-free
 
     if format is "raw"
-      done
+      @done
         total: total
         used: used
         free: free
     else if format is "pretty"
-      done
+      @done
         total: readableSize total
         used: readableSize used
         free: readableSize free
     else
-      throw "Invalid format specified"
+      @error "Invalid format specified"
 
-  total: (done, format="raw") ->
+  total: (format="raw") ->
     if format is "raw"
-      done os.totalmem()
+      @done os.totalmem()
     else if format is "pretty"
-      done readableSize os.totalmem()
+      @done readableSize os.totalmem()
     else
-      throw "Invalid format specified"
+      @error "Invalid format specified"
 
-  free: (done, format="raw") ->
+  free: (format="raw") ->
     if format is "raw"
-      done os.freemem()
+      @done os.freemem()
     else if format is "pretty"
-      done readableSize os.freemem()
+      @done readableSize os.freemem()
     else
-      throw "Invalid format specified"
+      @error "Invalid format specified"
 
-  used: (done, format="raw") ->
+  used: (format="raw") ->
     used = os.totalmem()-os.freemem()
     if format is "raw"
-      done used
+      @done used
     else if format is "pretty"
-      done readableSize used
+      @done readableSize used
     else
-      throw "Invalid format specified"
+      @error "Invalid format specified"

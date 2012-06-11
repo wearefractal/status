@@ -1,24 +1,29 @@
-{EventEmitter} = require 'events'
+Operation = require "./Operation"
 
-class Plugin extends EventEmitter
+class Plugin
   constructor: (plug) ->
-    @meta = plug.meta
-    @operations = {}
-    @operations[k] = v for k,v of plug when typeof v is "function" and k isnt "meta"
-    @emit 'loaded'
+    @_meta = plug.meta
+    @_operations = {}
+    for k,v of plug when typeof v is "function" and k isnt "meta"
+      if k is "_default"
+        @_default = v
+      else
+        @_operations[k] = new Operation k,v
     return
 
-  get: (name) -> @operations[name] or @operations._default? name
+  operations: -> (op.details() for name, op of @_operations)
+  operation: (name) -> 
+    return op if op = @_operations[name]
+    return new Operation name, op if op = @_default? name
 
-  run: (name, args, done) ->
-    op = @get name
-    return done "#{name}: Operation #{name} does not exist in #{@meta.name}" unless op?
-    return done "#{name}: Invalid arguments" unless Array.isArray args
-    try
-      cb = (ret) -> done null, ret
-      @emit 'task', name, args
-      op cb, args...
-    catch err
-      return done "#{name}: #{err.message or err}"
+  details: ->
+    out = 
+      name: @_meta.name
+      author: @_meta.author
+      version: @_meta.version
+      description: @_meta.description
+      operations: @operations()
+    return out
+    
 
 module.exports = Plugin

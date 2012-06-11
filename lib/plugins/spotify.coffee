@@ -35,35 +35,36 @@ module.exports =
     version: "0.0.1"
     description: "Spotify controls/information"
 
-  next: (done) ->
+  next: ->
     getInterface().Next()
-    done success: true
+    @done success: true
 
-  previous: (done) ->  
+  previous: ->  
     getInterface().Previous()
-    done success: true
+    @done success: true
 
-  toggle: (done) -> 
+  toggle: -> 
     getInterface().PlayPause()
-    done success: true
+    @done success: true
 
-  pause: (done) -> 
+  pause: -> 
     getInterface().Pause()
-    done success: true
+    @done success: true
 
-  play: (done) -> 
+  play: -> 
     getInterface().Play()
-    done success: true
+    @done success: true
 
-  stop: (done) -> 
+  stop: -> 
     getInterface().Stop()
-    done success: true
+    @done success: true
 
-  open: (done, uri) ->
+  open: (uri) ->
+    return @error 'Missing uri' unless typeof uri is 'string'
     getInterface().OpenUri uri
-    done success: true
+    @done success: true
 
-  playing: (done) ->
-    getMeta (meta) ->
+  playing: ->
+    getMeta (meta) =>
       meta.contentCreated = new Date meta.contentCreated
-      done meta
+      @done meta
