@@ -13,9 +13,8 @@ status =
   list: -> plugins
   remove: (name) -> delete plugins[name]
   load: (plugin) ->
+    # Validate plugin
     return "Invalid plugin: Plugin must be an object" unless typeof plugin is "object"
-
-    # Validate that plugin data exists
     return "Invalid plugin: Missing meta field" unless typeof plugin.meta is "object"
     {name, author, version} = plugin.meta
     return "Invalid plugin: Missing name field" unless typeof name is "string" and name.length > 0

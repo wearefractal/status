@@ -1,6 +1,5 @@
 CLI
   * Better documentation
-  * Parser for operation arguments (remove eval)
   * Allow reading input from stdin
   * Allow users to do post-run JSON selects
     * Example: status os uptime.hours == {"uptime":20}
@@ -11,7 +10,7 @@ CLI
 
 Plugins
   * Consolidate plugin utils and expose them for devs to use
-  * Allow plugins to specify catch-alls via _default and _all
+  * Allow plugins to specify catch-alls via _all
   * Allow operations to get the value of the previous
   * Consolidate plugin loading/operation running
   * Allow plugins to return plugins recursively

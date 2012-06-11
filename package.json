@@ -14,7 +14,8 @@
       "loggo":"*",
       "semver":"*",
       "commander":"*",
-      "async":"*"
+      "async":"*",
+      "argus":"*"
    },
    "optionalDependencies":{
       "dbus":"*"
