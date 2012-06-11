@@ -15,7 +15,7 @@ module.exports =
     ls.action list
 
     for name, plugin of status.list()
-      cmd = program.command "#{name} <operations>"
+      cmd = program.command "#{name} [operations]"
       cmd.description plugin.meta.description
       cmd.option "-p, --plain", "output as plain text"
       cmd.action execute
