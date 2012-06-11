@@ -49,7 +49,7 @@ describe 'listing', ->
 
     res = status.load plugin
     res.should.equal true
-    status.list()[plugin.meta.name].meta.version.should.equal plugin.meta.version
+    status.plugins()[plugin.meta.name].details().version.should.equal plugin.meta.version
     status.remove plugin.meta.name
     done()
 
@@ -60,14 +60,16 @@ describe 'executing', ->
         name: "test"
         author: "Contra"
         version: "0.0.1"
-      doStuff: (done, a, b) -> done a+b
+      doStuff: (a, b) -> @done a+b
 
     res = status.load plugin
     res.should.equal true
-    plug = status.list()[plugin.meta.name]
-    plug.run "doStuff", [1,2], (err, ret) ->
-      should.not.exist err
+    plug = status.plugins()[plugin.meta.name]
+    op = plug.operation "doStuff" 
+    op.on 'error', done
+    op.on 'done', (ret) ->
       should.exist ret
       ret.should.equal 3
       status.remove plugin.meta.name
       done()
+    op.run 1, 2
