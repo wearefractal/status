@@ -1,8 +1,8 @@
 {exec} = require "child_process"
-util = require '../util'
+{which} = require "fractal"
 
 runNm = (fields, cb) ->
-  throw "nmcli not installed" unless util.which "nmcli"
+  throw "nmcli not installed" unless which "nmcli"
   exec "nmcli -t -f active,#{fields} dev wifi", (err, stdout) ->
     throw err if err? 
     cb (line for line in stdout.split('\n') when line.indexOf("yes") is 0)[0]

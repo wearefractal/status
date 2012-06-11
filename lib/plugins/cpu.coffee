@@ -1,6 +1,6 @@
 {exec} = require "child_process"
 os = require "os"
-{readableSpeed, calculateCPU} = require "../util"
+{readableSpeed, calculateCPU} = require "fractal"
 
 module.exports =
   meta:

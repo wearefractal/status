@@ -1,8 +1,8 @@
 {exec} = require "child_process"
-util = require '../util'
+{which} = require "fractal"
 
 runPs = (args, cb) ->
-  throw "ps not installed" unless util.which "ps"
+  throw "ps not installed" unless which "ps"
   exec "ps #{args}", (err, stdout, stderr) ->
     throw err if err?
     [head, processes..., tail] = stdout.split '\n'

@@ -1,8 +1,8 @@
 {exec} = require "child_process"
 dbus = require "dbus"
-util = require '../util'
+{which} = require "fractal"
 
-throw "Spotify not installed" unless util.which "spotify"
+throw "Spotify not installed" unless which "spotify"
 
 getMeta = (cb) ->
   exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata'", (err, stdout) ->

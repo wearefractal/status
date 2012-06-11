@@ -1,7 +1,7 @@
 {
    "name":"status",
    "description":"System automation on steroids",
-   "version":"0.0.4",
+   "version":"0.0.5",
    "homepage":"http://github.com/wearefractal/status",
    "repository":"git://github.com/wearefractal/status.git",
    "author":"Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
@@ -15,7 +15,8 @@
       "semver":"*",
       "commander":"*",
       "async":"*",
-      "argus":"*"
+      "argus":"*",
+      "fractal":"*"
    },
    "optionalDependencies":{
       "dbus":"*"

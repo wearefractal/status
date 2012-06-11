@@ -1,5 +1,5 @@
 {exec} = require "child_process"
-{which} = require "../util"
+{which} = require "fractal"
 
 module.exports =
   meta:

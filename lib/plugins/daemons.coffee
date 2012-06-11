@@ -1,5 +1,5 @@
 {exec} = require "child_process"
-{which} = require "../util"
+{which} = require "fractal"
 
 boiler = (command, format, done)->
   throw 'rc.d not installed' unless which 'rc.d'

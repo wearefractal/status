@@ -1,6 +1,6 @@
 os = require "os"
 {exec} = require "child_process"
-{readableSpeed, convertSeconds, prettySeconds} = util = require "../util"
+{readableSpeed, seconds, which} = require "fractal"
 
 module.exports =
   meta:
@@ -11,22 +11,17 @@ module.exports =
   
   load: (done) -> 
     calc = (Math.floor(num*1000)/1000 for num in os.loadavg())
-    avg = Math.floor((calc.reduce((t,s)->t+s)/calc.length)*100)/100
-    done (if process.env.PLAIN_TEXT then avg else calc)
+    calc = Math.floor((calc.reduce((t,s)->t+s)/calc.length)*100)/100 if process.env.PLAIN_TEXT
+    done calc
 
   uptime: (done, format="raw") ->
     secs = os.uptime()
+    time = seconds.convert secs
     if format is "raw"
-      time = convertSeconds secs
-      if process.env.PLAIN_TEXT
-        time.days ?= "00"
-        time.hours ?= "00"
-        time.minutes ?= "00"
-        time.seconds ?= "00"
-        time = "#{time.days}:#{time.hours}:#{time.minutes}:#{time.seconds}"
+      time = seconds.small time if process.env.PLAIN_TEXT
       done time
     else if format is "pretty"
-      done prettySeconds secs
+      done seconds.pretty time
     else if format is "full"
       done secs
     else
@@ -40,8 +35,8 @@ module.exports =
   environment: (done) -> done process.env
   
   drives: (done) ->
-    throw "df not installed" unless util.which "df"
-    throw "awk not installed" unless util.which "awk"
+    throw "df not installed" unless which "df"
+    throw "awk not installed" unless which "awk"
     exec "df | awk '{print $1}'", (err, stdout) ->
       throw err if err?
       out = {}

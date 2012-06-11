@@ -1,5 +1,5 @@
 {readFile} = require "fs"
-{readableSize} = require '../util'
+{readableSize} = require "fractal"
 
 module.exports =
   meta:

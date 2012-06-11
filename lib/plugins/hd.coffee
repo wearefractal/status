@@ -1,9 +1,9 @@
 {exec} = require "child_process"
-{readableSize} = util = require '../util'
+{readableSize, which} = require "fractal"
 
 runCommand = (pretty=false, cb) ->
-  throw "df not installed" unless util.which "df"
-  throw "awk not installed" unless util.which "awk"
+  throw "df not installed" unless which "df"
+  throw "awk not installed" unless which "awk"
   exec "df --block-size=1 | awk '{print $1,$3,$4}'", (err, stdout) ->
     throw err if err?
     out = {}
@@ -25,7 +25,7 @@ module.exports =
     description: "Hard Disk information"
 
   temp: (done, unit="C") ->
-    throw "hddtemp not installed" unless util.which "hddtemp"
+    throw "hddtemp not installed" unless which "hddtemp"
     exec "hddtemp /dev/sda -n --unit=#{unit}", (err, stdout) ->
       throw err if err?
       done parseInt stdout

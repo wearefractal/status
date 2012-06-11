@@ -1,5 +1,5 @@
 os = require "os"
-{readableSize} = require "../util"
+{readableSize} = require "fractal"
 
 module.exports =
   meta:

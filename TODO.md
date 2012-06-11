@@ -9,8 +9,7 @@ CLI
     * Example: status os disks[0].usage.free
 
 Plugins
-  * Consolidate plugin utils and expose them for devs to use
-  * Allow plugins to specify catch-alls via _all
+  * Plugins should emit events and allow catch-alls
   * Allow operations to get the value of the previous
   * Consolidate plugin loading/operation running
   * Allow plugins to return plugins recursively
