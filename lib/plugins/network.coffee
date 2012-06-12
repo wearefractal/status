@@ -19,7 +19,7 @@ module.exports =
       else
         @error "Invalid format specified"
 
-  downstream: (done, int="eth0", format="raw") ->
+  downstream: (int="eth0", format="raw") ->
     readFile "/sys/class/net/#{int}/statistics/rx_bytes", (err, res) =>
       return @error err if err?
       val = parseInt res

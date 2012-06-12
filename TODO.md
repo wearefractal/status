@@ -9,9 +9,7 @@ CLI
     * Example: status os disks[0].usage.free
 
 Plugins
-  * Plugins should emit events and allow catch-alls
   * Allow operations to get the value of the previous
-  * Consolidate plugin loading/operation running
   * Allow plugins to return plugins recursively
 
 Web Server
