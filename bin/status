@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 
-require('coffee-script');
+require('coffee-script/register');
 require('../lib/command').run(process.argv, require('commander'));
