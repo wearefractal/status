@@ -18,7 +18,7 @@
 
 ## Introduction
 
-Shh... It's okay - everything is going to be alright. status is here to make all of your nightmares go away. 
+Shh... It's okay - everything is going to be alright. status is here to make all of your nightmares go away.
 
 status provides a flexible JSON interface on top of any commands/tasks/sensors/signals/hardware/etc you want to automate. status operations can be run locally (via the CLI) or remotely (via the REST server).
 
@@ -155,11 +155,11 @@ coolkern =
     version: "0.0.1"
 
   version: ->
-    exec "uname -r", (err, stdout) => 
+    exec "uname -r", (err, stdout) =>
       @done stdout
 ```
 
-Simple enough, right? Now add it to status 
+Simple enough, right? Now add it to status
 
 ```coffee-script
 status = require 'status'
