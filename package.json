@@ -1,7 +1,7 @@
 {
   "name": "status",
   "description": "System automation on steroids",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "homepage": "http://github.com/wearefractal/status",
   "repository": "git://github.com/wearefractal/status.git",
   "author": "Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
