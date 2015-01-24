@@ -10,7 +10,7 @@ runPs = (args, cb) ->
     for process in processes
       process = (part for part in process.split(' ') when part.length > 0) # clean
       [user, pid, cpu, mem, vsz, rss, tty, stat, start, time, command...] = process
-      out.push 
+      out.push
         user: user
         pid: parseInt pid
         cpu: parseFloat cpu

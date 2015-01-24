@@ -7,14 +7,14 @@ module.exports = (ops, {name, plain}) ->
   process.env.PLAIN_TEXT = true if plain
   plugin = status.plugins()[name]
   return log.error "Plugin '#{name}' is not installed" unless plugin
-  
+
   if typeof ops is "string" and ops.length > 0
     operations = argus.parse ops
     operations = ({name:k,args:v} for k,v of argus.parse ops)
   else if plugin.operation null
     operations = [{name:null,args:[null]}]
   else
-    return log.error "No operations specified" 
+    return log.error "No operations specified"
 
   out = {}
   run = ({name, args}, cb) ->

@@ -8,7 +8,7 @@ boiler = (command, format, done)->
       done format stdout
     else
       throw err if err? #TODO return more useful errors
-      done format stdout 
+      done format stdout
 
 listFormat = (stdout)->
   entries = stdout.split '\n'

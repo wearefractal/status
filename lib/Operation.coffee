@@ -9,7 +9,7 @@ class Operation extends EventEmitter
     return
 
   details: =>
-    out = 
+    out =
       name: @_meta.name
       arguments: parseArguments(@fn)
     return out

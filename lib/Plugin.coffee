@@ -12,18 +12,17 @@ class Plugin
     return
 
   operations: -> (op.details() for name, op of @_operations)
-  operation: (name) -> 
+  operation: (name) ->
     return op if op = @_operations[name]
     return new Operation name, op if op = @_default? name
 
   details: ->
-    out = 
+    out =
       name: @_meta.name
       author: @_meta.author
       version: @_meta.version
       description: @_meta.description
       operations: @operations()
     return out
-    
 
 module.exports = Plugin
